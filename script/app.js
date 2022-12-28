@@ -23,20 +23,9 @@ Your browser does not support the audio element.
  </audio>`;
 setTimeout(() => {
     document.querySelector("#go").click();
-  }, 5000);
+  }, 3000);
 }
 
-//audio
-// let start = document.getElementById("start");
-// start.addEventListener("click", function() {
-// document.querySelector("#audio").innerHTML += `<audio controls autoplay style="display : none">
-// <source src="assets/img/race-start.mp3" type="audio/ogg">
-// Your browser does not support the audio element.
-// </audio>`;
-// setTimeout(() => {
-//     document.querySelector("#pageinfo").click();
-//   }, 5000);
-//   });
 
 // fetch file json
 let url = 'script/Quiz.json';
@@ -143,13 +132,14 @@ function Star() {
 //function affeche Question
 let maxclick;
 let index = 0;
-let pro = -0;
+let pro = -10;
 function afficheQst() {
     if (!faint) {
         clearInterval(idtimer);
-        let proNum = parseInt(100 / array.length);
-        pro += proNum;
-      
+        // let proNum = parseInt(100 / array.length);
+        // pro += proNum;
+        pro+=10;
+        maxclick--;
         // let index = getRandomInt(array.length)
         timeOfQst(14, maxclick);
         document.getElementById('timer').style.display = 'block';
@@ -171,10 +161,11 @@ function afficheQst() {
         });
         document.querySelector('.card-body').innerHTML += ` </div>
         <div class="  d-flex justify-content-end">
+        <button class="btn btn-primary"  data-toggle="modal" style="display : none" data-target="#exampleModal">Show Correct Answer</button>
             <button class="btn btn-primary" onclick="next(${array[index].correctanswer.index})" id="next">Next</button></div>
-    </div>`; 
+    </div>
+    `; 
     index++
-    maxclick--;
         document.getElementById("time_Pogress").style.width = pro + "%";
         
     }
@@ -206,8 +197,8 @@ let numberofCorrect = 0;
 let numberofInCorrect = 0;
 // -------------------------------------------function next 
 function next(crctanswer) {
-    console.log(maxclick);
-    if (maxclick > 0) {
+    console.log(maxclick+"Qst");
+    if (maxclick >= 0) {
         // let checkbox0 = document.getElementById('0').checked;
         // let checkbox1 = document.getElementById('1').checked;
         // let checkbox2 = document.getElementById('2').checked;
@@ -220,8 +211,8 @@ function next(crctanswer) {
                 let checks = document.querySelectorAll('input:checked');
          let checksid = [];
       
-         checks.forEach((e)=>checksid.push( parseInt(e.id)))
-
+         checks.forEach((e)=>{ console.log(e.id) ;checksid.push(  parseInt(e.id))})
+         console.log(checksid +"array")
          let checksidinccorect ='';
          
          if (checksid.length>1){
@@ -231,21 +222,29 @@ function next(crctanswer) {
             numberofInCorrect++
             afficheQst()
          }
-         else if(checksid.length==0){
+        if(checksid.length==0){
             checksid.forEach((e)=>{ checksidinccorect= checksidinccorect +checksid[e]})
             let incorrectanswer = [{ "Qstid": idqst ,"checksidinccorect":"vide"}]
             incorrect.push(incorrectanswer);
             numberofInCorrect++
             afficheQst()
          }
-         else{
-            numberofCorrect++;
+         
+       if(checksid.length ==1){
+        if(checksid[0] === element.correctanswer.index ){
             let timePassed = document.getElementById('timer').innerText;
             let correctanswer = [{ "Qstid": idqst, "anser": element.choices[checksid[0]], timePassed }]
             correct.push(correctanswer);
             afficheQst()
-         }
+        }
+        else{
+            let incorrectanswer = [{ "Qstid": idqst ,"checksidinccorect":checksid[0]}]
+            incorrect.push(incorrectanswer);
+            numberofInCorrect++
+            afficheQst()
+        }
 
+       }
 
                 // if (checkbox0) {
                 //     // let id0 = document.querySelector('label[for="0"]').id
@@ -359,19 +358,23 @@ function next(crctanswer) {
         // }
     }
     else {
+        numberofCorrect = 10-incorrect.length ;
         console.log('finich')
         Swal.fire({
             title: 'Quiz is finish',
             text: "",
-            icon: 'information',
+            icon: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'show result !'
         }).then((result) => {
-            console.log(incorrect);
-            console.log(correct);
-            Swal.fire(nameusr + ' your result :' + numberofCorrect + '/' + array.length)
+            if (result.isConfirmed) {
+                console.log(incorrect);
+                console.log(correct);
+                Swal.fire(nameusr + ' your result :' + numberofCorrect + '/' + array.length +" </br></br>  </br> ")
+            }
+           
         })
     }
 

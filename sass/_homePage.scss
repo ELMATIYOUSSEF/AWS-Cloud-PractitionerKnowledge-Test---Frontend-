@@ -1,11 +1,19 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Rubik Bubbles', cursive;
+    font-size: 16px;
+}
 body{
-    background-image: linear-gradient(to bottom, #4191ff, #829ef3, #a7aee7, #c0bfdc, #d2d2d2);
+    background-image: linear-gradient(to right top, #6bd184, #1cd0a9, #00cbcb, #00c3e3, #35b9ee, #5ebbee, #79beed, #8fc1ec, #a2d2ed, #bce1ef, #daeff3, #f9fcfc);
+
 }
 .section1{
     height: 100vh !important;
 }
 #labelName{
+    font-family: 'Rubik Bubbles', cursive; 
     font-size:25px;
     color: brown;
     &:hover{
