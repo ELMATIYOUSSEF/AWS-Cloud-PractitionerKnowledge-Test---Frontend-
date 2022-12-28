@@ -16,19 +16,27 @@ function faintTest() {
     })
 }
 
-
+function startSound(){
+    document.querySelector("#audio").innerHTML += `<audio controls autoplay style="display : none">
+ <source src="assets/img/start.mp3" type="audio/ogg">
+Your browser does not support the audio element.
+ </audio>`;
+setTimeout(() => {
+    document.querySelector("#go").click();
+  }, 5000);
+}
 
 //audio
-let start = document.getElementById("start");
-start.addEventListener("click", function() {
-document.querySelector("#audio").innerHTML += `<audio controls autoplay style="display : none">
-<source src="assets/img/race-start.mp3" type="audio/ogg">
-Your browser does not support the audio element.
-</audio>`;
-setTimeout(() => {
-    document.querySelector("#pageinfo").click();
-  }, 5000);
-  });
+// let start = document.getElementById("start");
+// start.addEventListener("click", function() {
+// document.querySelector("#audio").innerHTML += `<audio controls autoplay style="display : none">
+// <source src="assets/img/race-start.mp3" type="audio/ogg">
+// Your browser does not support the audio element.
+// </audio>`;
+// setTimeout(() => {
+//     document.querySelector("#pageinfo").click();
+//   }, 5000);
+//   });
 
 // fetch file json
 let url = 'script/Quiz.json';

@@ -23,7 +23,8 @@
                     <label for="name" id="labelName">name :</label><br>
                     <input type="text" name="name" id="name">
                 </div>
-                <div class="card-footer"><button class="btn btn-primary" onclick="timer()" id="go">Go</button></div>
+                <div class="card-footer"><button class="btn btn-primary" onclick="startSound()" >Go</button><button class="btn btn-primary" onclick="timer()" style="display : none" id="go"></button></div>
+                <div id="audio"></div>
             </div>
         </div>
         <div id="timer" style="display: none;">15</div>
