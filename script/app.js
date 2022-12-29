@@ -9,21 +9,20 @@ let idtimer;
 let idForgetname;
 let faint = false;
 
-
 function faintTest() {
     window.addEventListener('blur', () => {
         faint = true;
     })
 }
 
-function startSound(){
+function startSound() {
     document.querySelector("#audio").innerHTML += `<audio controls autoplay style="display : none">
  <source src="assets/img/start.mp3" type="audio/ogg">
 Your browser does not support the audio element.
  </audio>`;
-setTimeout(() => {
-    document.querySelector("#go").click();
-  }, 3000);
+    setTimeout(() => {
+        document.querySelector("#go").click();
+    }, 3000);
 }
 
 
@@ -62,8 +61,6 @@ function timer() {
         timeOfStar(1);
     }
 }
-
-
 
 
 
@@ -119,39 +116,39 @@ function getRandomInt(lengthArry) {
     return Math.floor(Math.random() * lengthArry);
 }
 
-console.log(Math.random())
 // function start
 function Star() {
-    localStorage.clear();
     clearInterval(idtimer);
     maxclick = array.length;
+    maxclick + 1;
+    maxclickforPorgres = array.length;
+    console.log(maxclickforPorgres);
     afficheQst();
     faintTest();
 }
 
 //function affeche Question
 let maxclick;
-let index = 0;
-let pro = -10;
+let indeX = 0;
+let pro = 0;
 function afficheQst() {
     if (!faint) {
         clearInterval(idtimer);
-        // let proNum = parseInt(100 / array.length);
-        // pro += proNum;
-        pro+=10;
+        let proNum = 100 / maxclickforPorgres;
+        pro += proNum;
         maxclick--;
         // let index = getRandomInt(array.length)
         timeOfQst(14, maxclick);
         document.getElementById('timer').style.display = 'block';
         card.innerHTML = `<div class="card col-6  ">
         <div class="card-header w-100">
-            <h5 class="text-center" id="qst">${array[index].Qst}</h5>
+            <h5 class="text-center" id="qst">${array[indeX].Qst}</h5>
         </div>
         <div class="card-body">
-        <label id="idQtion" style="display:none">${array[index].Qstid}</label> 
+        <label id="idQtion" style="display:none">${array[indeX].Qstid}</label> 
         <div class="time_Pogres" id="time_Pogress"></div>`
         let iQ = 0;
-        array[index].choices.forEach(chois => {
+        array[indeX].choices.forEach(chois => {
             document.querySelector('.card-body').innerHTML += ` 
         <label class="infoA labelBtn"  for="${iQ}">
         <input type="checkbox"  class="infoQ" id="${iQ}" > ${chois}
@@ -161,18 +158,20 @@ function afficheQst() {
         });
         document.querySelector('.card-body').innerHTML += ` </div>
         <div class="  d-flex justify-content-end">
-        <button class="btn btn-primary"  data-toggle="modal" style="display : none" data-target="#exampleModal">Show Correct Answer</button>
-            <button class="btn btn-primary" onclick="next(${array[index].correctanswer.index})" id="next">Next</button></div>
+        <div class ="btnShow">
+        <button class="btn btn-primary" id="showScor"  style="display : none"  onclick="showScor()">Score</button>
+        <button class="btn btn-primary" id="show"  data-toggle="modal" style="display : none" data-target="#exampleModal" onclick="showResult()">Show Correct Answer</button> </div>
+            <button class="btn btn-primary" onclick="next(${array[indeX].correctanswer.index})" id="next">Next</button></div>
     </div>
-    `; 
-    index++
+    `;
+        indeX++
         document.getElementById("time_Pogress").style.width = pro + "%";
-        
+
     }
     else {
         clearInterval(idtimer);
         Swal.fire('<img src="../assets/img/fail-test.jpg" style="width:300px"=alt="Fail" srcset="">')
-        
+
     }
 
 }
@@ -197,7 +196,7 @@ let numberofCorrect = 0;
 let numberofInCorrect = 0;
 // -------------------------------------------function next 
 function next(crctanswer) {
-    console.log(maxclick+"Qst");
+    console.log(maxclick + "Qst");
     if (maxclick >= 0) {
         // let checkbox0 = document.getElementById('0').checked;
         // let checkbox1 = document.getElementById('1').checked;
@@ -209,42 +208,44 @@ function next(crctanswer) {
             if (element.Qstid == idqst) {
 
                 let checks = document.querySelectorAll('input:checked');
-         let checksid = [];
-      
-         checks.forEach((e)=>{ console.log(e.id) ;checksid.push(  parseInt(e.id))})
-         console.log(checksid +"array")
-         let checksidinccorect ='';
-         
-         if (checksid.length>1){
-            checksid.forEach((e)=>{ checksidinccorect= checksidinccorect +checksid[e]})
-            let incorrectanswer = [{ "Qstid": idqst ,"checksidinccorect":checksidinccorect}]
-            incorrect.push(incorrectanswer);
-            numberofInCorrect++
-            afficheQst()
-         }
-        if(checksid.length==0){
-            checksid.forEach((e)=>{ checksidinccorect= checksidinccorect +checksid[e]})
-            let incorrectanswer = [{ "Qstid": idqst ,"checksidinccorect":"vide"}]
-            incorrect.push(incorrectanswer);
-            numberofInCorrect++
-            afficheQst()
-         }
-         
-       if(checksid.length ==1){
-        if(checksid[0] === element.correctanswer.index ){
-            let timePassed = document.getElementById('timer').innerText;
-            let correctanswer = [{ "Qstid": idqst, "anser": element.choices[checksid[0]], timePassed }]
-            correct.push(correctanswer);
-            afficheQst()
-        }
-        else{
-            let incorrectanswer = [{ "Qstid": idqst ,"checksidinccorect":checksid[0]}]
-            incorrect.push(incorrectanswer);
-            numberofInCorrect++
-            afficheQst()
-        }
+                let checksid = [];
 
-       }
+                checks.forEach((e) => { console.log(e.id); checksid.push(parseInt(e.id)) })
+                console.log(checksid + "array")
+                let checksidinccorect = '';
+
+                if (checksid.length > 1) {
+                    checksid.forEach((el) => { checksidinccorect = checksidinccorect + checksid[el] })
+                    let incorrectanswer = { "Q": "incorrect", "Qstid": idqst, "checksid0": (checksid[0]) ? checksid[0] : '', "checksid1": (checksid[1]) ? checksid[1] : '', "checksid2": (checksid[2]) ? checksid[2] : '', "checksid3": (checksid[3]) ? checksid[3] : '' }
+                    incorrect.push(incorrectanswer);
+                    numberofInCorrect++
+                    afficheQst()
+                    console.log('incorrectanswer : ' + incorrectanswer)
+                    console.log('incorrect : ' + incorrect)
+                }
+                if (checksid.length == 0) {
+                    checksid.forEach((e) => { checksidinccorect = checksidinccorect + checksid[e] })
+                    let incorrectanswer = { "Q": "incorrect", "Qstid": idqst, "checksidinccorect": "vide" }
+                    incorrect.push(incorrectanswer);
+                    numberofInCorrect++
+                    afficheQst()
+                }
+
+                if (checksid.length == 1) {
+                    if (checksid[0] === element.correctanswer.index) {
+                        let timePassed = document.getElementById('timer').innerText;
+                        let correctanswer = { "Q": "correct", "Qstid": idqst, "anser": element.choices[checksid[0]], "time": parseInt(timePassed) }
+                        incorrect.push(correctanswer);
+                        afficheQst()
+                    }
+                    else {
+                        let incorrectanswer = { "Q": "incorrect", "Qstid": idqst, "checksidinccorect": checksid[0] }
+                        incorrect.push(incorrectanswer);
+                        numberofInCorrect++
+                        afficheQst()
+                    }
+
+                }
 
                 // if (checkbox0) {
                 //     // let id0 = document.querySelector('label[for="0"]').id
@@ -258,7 +259,7 @@ function next(crctanswer) {
                 //         let incorrectanswer = [{ "Qstid": idqst, "anser": element.choices[0] }]
                 //         incorrect.push(incorrectanswer);
                 //         numberofInCorrect++;
-                      
+
                 //     }
                 // }
                 // if (checkbox1) {
@@ -268,13 +269,13 @@ function next(crctanswer) {
                 //         let timePassed = document.getElementById('timer').innerText;
                 //         let correctanswer = [{ "Qstid": idqst, "anser": element.choices[1], timePassed }]
                 //         correct.push(correctanswer);
-                   
+
                 //     }
                 //     else {
                 //         let incorrectanswer = [{ "Qstid": idqst, "anser": element.choices[1] }]
                 //         incorrect.push(incorrectanswer);
                 //         numberofInCorrect++
-                     
+
                 //     }
                 // }
                 // if (checkbox2) {
@@ -284,13 +285,13 @@ function next(crctanswer) {
                 //         let timePassed = document.getElementById('timer').innerText;
                 //         let correctanswer = [{ "Qstid": idqst, "anser": element.choices[2], timePassed }]
                 //         correct.push(correctanswer);
-                        
+
                 //     }
                 //     else {
                 //         let incorrectanswer = [{ "Qstid": idqst, "anser": element.choices[2] }]
                 //         incorrect.push(incorrectanswer);
                 //         numberofInCorrect++
-                  
+
                 //     }
                 // }
                 // if (checkbox3) {
@@ -300,13 +301,13 @@ function next(crctanswer) {
                 //         let timePassed = document.getElementById('timer').innerText;
                 //         let correctanswer = [{ "Qstid": idqst, "anser": element.choices[3], timePassed }]
                 //         correct.push(correctanswer);
-                     
+
                 //     }
                 //     else {
                 //         let incorrectanswer = [{ "Qstid": idqst, "anser": element.choices[3] }]
                 //         incorrect.push(incorrectanswer);
                 //         numberofInCorrect++
-                    
+
                 //     }
                 // }
                 // if (numberofInCorrect > 0 && !checkbox0 && !checkbox1 && !checkbox2 && !checkbox3) {
@@ -353,12 +354,23 @@ function next(crctanswer) {
         //         }
         //     }
         // });
-
-
         // }
+
+
+
     }
     else {
-        numberofCorrect = 10-incorrect.length ;
+        let t = 0
+        incorrect.forEach(element => {
+            if (element.Q == 'correct') {
+                t = t + element.time
+                numberofCorrect++;
+                console.log(t);
+            }
+        });
+        let Questions = array.length
+        let totaleTime = Questions * 15;
+        let score = (t / totaleTime) * 100
         console.log('finich')
         Swal.fire({
             title: 'Quiz is finish',
@@ -370,18 +382,24 @@ function next(crctanswer) {
             confirmButtonText: 'show result !'
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(incorrect);
-                console.log(correct);
-                Swal.fire(nameusr + ' your result :' + numberofCorrect + '/' + array.length +" </br></br>  </br> ")
+                console.log(incorrect + "incoorect");
+                console.log(correct + "corrrect");
+                clearInterval(idtimer);
+                document.getElementById("next").style.display = "none";
+                document.getElementById("show").style.display = "block";
+                document.getElementById("showScor").style.display = "block";
+                Swal.fire(nameusr + ' your result :' + numberofCorrect + '/' + Questions + " </br > ")
+                SaveInLocalStorge(nameusr, score)
             }
-           
+
         })
     }
 
 }
 
-
-
+function SaveInLocalStorge(nameusr, score) {
+    localStorage.setItem(nameusr, score);
+}
 // function set interval for relawd function increment evry 1s
 
 function timeOfQst(secend, maxclick) {
@@ -393,20 +411,19 @@ function timeOfQst(secend, maxclick) {
             labelTime = document.querySelector("#timer");
             labelTime.innerText = secend;
             if (secend > 9) {
-                labelTime.style.color = " rgb(226, 219, 254)";
-                labelTime.style.border = "solid 3px rgb(226, 219, 254)";
+                labelTime.style.color = " #0d0151";
+                labelTime.style.border = "solid 3px #0d0151";
             }
             if (secend < 10) { //if secend is less than 9
                 let addZero = labelTime.textContent;
                 labelTime.style.color = "red";
-                labelTime.style.border = "rgb(226, 219, 254)"
                 labelTime.style.border = "solid 3px red";
                 labelTime.textContent = "0" + addZero; //add a 0 before time value
             }
             if (secend === 0) {
                 clearInterval(idtimer);
-                labelTime.style.border = "solid 3px rgb(226, 219, 254)";
-                labelTime.style.color = "rgb(226, 219, 254)";
+                labelTime.style.border = "solid 3px #0d0151";
+                labelTime.style.color = "#0d0151";
                 document.getElementById("next").click();
                 secend = 15;
             }
@@ -416,3 +433,90 @@ function timeOfQst(secend, maxclick) {
     }, 1000);
 }
 
+// show result 
+function showResult() {
+
+    array.forEach(arrayExp => {
+
+
+        Explication = document.querySelector('.correctanswer')
+        InExplication = document.querySelector('.Incorrectanswer')
+        incorrect.forEach(inc => {
+            if (inc.Q == 'incorrect') {
+                if (inc.Qstid == arrayExp.Qstid) {
+                    console.log(inc.Qstid + " arrayINExp" + arrayExp.Qstid)
+                    InExplication.innerHTML += `<div class="card">
+            <div class="card-header colorRed">
+            Question N :${inc.Qstid} / ${arrayExp.Qst}
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+            <p> Explication : ${arrayExp.correctanswer.Exp} </p>
+              </blockquote>
+            </div>
+          </div>`
+
+
+                }
+            }
+
+            if (inc.Q == 'correct') {
+                if (inc.Qstid == arrayExp.Qstid) {
+                    Explication.innerHTML += `<div class="card">
+        <div class="card-header colorGreen">
+        Question N : ${inc.Qstid} / ${arrayExp.Qst}
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>your answer :${inc.anser}</p>
+            <p> Explication : ${arrayExp.correctanswer.Exp} </p>
+          </blockquote>
+        </div>
+      </div>`
+                }
+            }
+
+        });
+
+    })
+}
+let scorArray = []
+function showScor() {
+    // Retrieve data
+    $('#exampleModal').modal('show');
+    let title = document.querySelector('#Title')
+    let bodymodal = document.querySelector('.modal-body')
+    title.innerText = "Result && Score :"
+    bodymodal.innerHTML = "";
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        var value = localStorage.getItem(key);
+        value = Math.floor(value)
+
+        let arrScor = { "name": key,"score": value }
+        scorArray.push(arrScor);
+
+    }
+
+    let sortedArr = scorArray.sort((a, b) => b.score - a.score);
+    // alert(sortByvalue)
+    // scorArray.sort((a,b) => b.value - a.value);
+    // scorArray.reverse();
+    sortedArr.forEach((e)=>{
+
+        bodymodal.innerHTML += `
+        <table>
+  <tr>
+    <th> Name </th>
+    <th>Result</th>
+  </tr>
+  <tr>
+    <td>${e.name}</td>
+    <td>${e.score}</td>
+  </tr>
+
+</table>
+        `
+
+    })
+}
